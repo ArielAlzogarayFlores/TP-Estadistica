@@ -62,13 +62,12 @@ for (i in 1:10){
 p <- c(0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1)
 lambdas <- c(70, 75, 80, 85, 90, 95, 100)
 matrizProbaRendNoOptimo <- matrix(nrow=length(p), ncol=length(lambdas), dimnames=list(p,lambdas))
-matrizProbaRendNoOptimo[matrizProbaRendNoOptimo != 1] <- 0
-for (i in length(lambdas)){
-  for (j in length(p)){
+for (i in 1:length(lambdas)){
+  for (j in 1:length(p)){
     muestra <- numeric(1000)
-    numeroPasajeros <- rpois(1000, i)
-    for (k in 1:1000){
-      if (numeroPasajeros[k] > 81){
+    numeroPasajeros <- rpois(1000, lambdas[i]) # Cuántos pasajeros habrá en cada vuelo simulado
+    for (k in 1:1000){ 
+      if (numeroPasajeros[k] > 81){ # Correjimos vector `numeroPasajeros` para evitar simulaciones con más de 81 pasajeros
         numeroPasajeros[k] <- 81
       }
       pasajeros <- rbinom(n=numeroPasajeros[k], size=1, prob=p[j])
@@ -84,6 +83,6 @@ for (i in length(lambdas)){
   }
 }
 
-
-
-
+matplot(t(matrizProbaRendNoOptimo), xaxt = "n", pch=15:22, col=c(2:7,7),  type="b", ylab = "Probabilidad de RNO (Rendimiento No Óptimo)", xlab= "Valor de Lambda (λ)", main="Probabilidad de RNO de diferentes P's en función de lambda (λ)")
+axis(1, at=1:length(lambdas), labels=lambdas)
+legend("topleft", inset=0.01, legend=p, pch=15:22, col=c(2:7,7), horiz=FALSE)
