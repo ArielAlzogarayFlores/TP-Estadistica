@@ -4,8 +4,8 @@
 
 # Creamos una muestra del peso total de los pasajeros en 1000 viajes de avión
 
-muestra <- numeric(10000)
-for (i in 1:10000) { # Cada dato en la muestra es la suma de los pesos de 81 pasajeros adultos, es decir, el peso total en un vuelo
+muestra <- numeric(1000)
+for (i in 1:1000) { # Cada dato en la muestra es la suma de los pesos de 81 pasajeros adultos, es decir, el peso total en un vuelo
   muestra[i] <- sum(rnorm(81, mean=70, sd = 7))  
 }
 
@@ -19,8 +19,8 @@ probaRendNoOptimo <- cantRendNoOptimo/length(muestra)
 
 # Escenario 2, ejercicio 1
 
-muestra <- numeric(100000)
-for (i in 1:100000){
+muestra <- numeric(1000)
+for (i in 1:1000){
   # 1 corresponde a adultos y 0 a niños
   pasajeros <- rbinom(n=81, size=1, prob=0.95)
   adultos <- sum(pasajeros == 1)
