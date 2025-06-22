@@ -33,3 +33,57 @@ for (i in 1:1000){
 cantRendNoOptimo <- sum(muestra > 5500)
 probaRendNoOptimo <- cantRendNoOptimo/length(muestra)
 
+# Escenario 3, ejercicio 1
+
+p <- c(0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1)
+vectorProbaRendNoOptimo <-numeric(10)
+
+for (i in 1:10){
+  muestra <- numeric(1000)
+  numeroPasajeros <- rpois(1000, 70)
+  for (j in 1:1000){
+    if (numeroPasajeros[j] > 81){
+      numeroPasajeros[j] <- 81
+    }
+    pasajeros <- rbinom(n=numeroPasajeros[j], size=1, prob=p[i])
+    adultos <- sum(pasajeros == 1)
+    niños <- sum(pasajeros == 0)
+    pesoAdultos <- sum(rnorm(adultos, mean=70, sd=7))
+    pesoNiños <- sum(rnorm(niños, mean=20, sd=5))
+    muestra[j] <- pesoAdultos + pesoNiños
+  }
+  cantRendNoOptimo <- sum(muestra > 5500)
+  probaRendNoOptimo <- cantRendNoOptimo/length(muestra)
+  vectorProbaRendNoOptimo[i] <- probaRendNoOptimo
+}
+
+# Escenario 3, ejercicio 2
+
+p <- c(0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1)
+lambdas <- c(70, 75, 80, 85, 90, 95, 100)
+matrizProbaRendNoOptimo <- matrix(nrow=length(p), ncol=length(lambdas), dimnames=list(p,lambdas))
+matrizProbaRendNoOptimo[matrizProbaRendNoOptimo != 1] <- 0
+for (i in length(lambdas)){
+  for (j in length(p)){
+    muestra <- numeric(1000)
+    numeroPasajeros <- rpois(1000, i)
+    for (k in 1:1000){
+      if (numeroPasajeros[k] > 81){
+        numeroPasajeros[k] <- 81
+      }
+      pasajeros <- rbinom(n=numeroPasajeros[k], size=1, prob=p[j])
+      adultos <- sum(pasajeros == 1)
+      niños <- sum(pasajeros == 0)
+      pesoAdultos <- sum(rnorm(adultos, mean=70, sd=7))
+      pesoNiños <- sum(rnorm(niños, mean=20, sd=5))
+      muestra[k] <- pesoAdultos + pesoNiños
+    }
+    cantRendNoOptimo <- sum(muestra > 5500)
+    probaRendNoOptimo <- cantRendNoOptimo/length(muestra)
+    matrizProbaRendNoOptimo[j,i] <- probaRendNoOptimo
+  }
+}
+
+
+
+
